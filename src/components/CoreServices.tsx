@@ -3,6 +3,10 @@ import { Music, Monitor, Printer } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
 const CoreServices = () => {
+  const whatsappNumber = "+2347038603819";
+  const whatsappMessage = "Hello! I'd like to get a quote for your services.";
+  const whatsappUrl = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(whatsappMessage)}`;
+
   const services = [
     {
       icon: Music,
@@ -31,13 +35,13 @@ const CoreServices = () => {
   ];
 
   return (
-    <section className="py-20 bg-gray-50">
+    <section className="py-20 bg-gradient-to-br from-gray-50 to-white">
       <div className="container mx-auto px-6">
         <div className="text-center mb-16 animate-fade-in">
-          <h2 className="text-4xl lg:text-5xl font-bold text-black mb-6">
+          <h2 className="text-4xl lg:text-5xl font-bold text-black mb-6 font-['Inter']">
             Our <span className="text-red-600">Core Services</span>
           </h2>
-          <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+          <p className="text-xl text-gray-600 max-w-3xl mx-auto font-['Inter']">
             From professional DJ entertainment to complete computer solutions and printing services, 
             we've got all your event and business needs covered.
           </p>
@@ -55,6 +59,7 @@ const CoreServices = () => {
                   src={service.image} 
                   alt={service.title}
                   className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
+                  loading="lazy"
                 />
                 <div className="absolute inset-0 bg-black/10 group-hover:bg-black/20 transition-all duration-300"></div>
                 
@@ -66,31 +71,42 @@ const CoreServices = () => {
               </div>
               
               <div className="p-8">
-                <h3 className="text-2xl font-bold text-black mb-4 group-hover:text-red-600 transition-colors duration-300">
+                <h3 className="text-2xl font-bold text-black mb-4 group-hover:text-red-600 transition-colors duration-300 font-['Inter']">
                   {service.title}
                 </h3>
-                <p className="text-gray-600 mb-6 leading-relaxed">
+                <p className="text-gray-600 mb-6 leading-relaxed font-['Inter']">
                   {service.description}
                 </p>
 
                 <ul className="space-y-3 mb-8">
                   {service.features.map((feature, idx) => (
-                    <li key={idx} className="flex items-center text-gray-600">
+                    <li key={idx} className="flex items-center text-gray-600 font-['Inter']">
                       <div className="w-2 h-2 rounded-full bg-red-600 mr-3"></div>
                       {feature}
                     </li>
                   ))}
                 </ul>
 
-                <Link 
-                  to={service.link}
-                  className="group/btn inline-flex items-center justify-center w-full py-4 px-6 rounded-full bg-red-600 hover:bg-red-700 text-white font-semibold transition-all duration-300 hover:scale-105"
-                >
-                  <span className="group-hover/btn:mr-2 transition-all duration-300">Learn More</span>
-                  <svg className="w-5 h-5 group-hover/btn:translate-x-1 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                  </svg>
-                </Link>
+                <div className="space-y-3">
+                  <Link 
+                    to={service.link}
+                    className="group/btn inline-flex items-center justify-center w-full py-3 px-6 rounded-full bg-red-600 hover:bg-red-700 text-white font-semibold transition-all duration-300 hover:scale-105 font-['Inter']"
+                  >
+                    <span className="group-hover/btn:mr-2 transition-all duration-300">Learn More</span>
+                    <svg className="w-5 h-5 group-hover/btn:translate-x-1 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                    </svg>
+                  </Link>
+                  
+                  <a 
+                    href={whatsappUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="group/btn inline-flex items-center justify-center w-full py-3 px-6 rounded-full border-2 border-red-600 text-red-600 hover:bg-red-600 hover:text-white font-semibold transition-all duration-300 hover:scale-105 font-['Inter']"
+                  >
+                    <span>Get Quote</span>
+                  </a>
+                </div>
               </div>
             </div>
           ))}

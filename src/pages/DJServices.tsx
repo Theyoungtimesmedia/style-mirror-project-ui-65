@@ -1,3 +1,4 @@
+
 import { useState } from 'react';
 import { Check, Music, Users, Star, Calendar, ArrowRight, Phone, Play } from 'lucide-react';
 import { Link } from 'react-router-dom';
@@ -110,10 +111,10 @@ const DJServices = () => {
         <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?w=1920&h=1080&fit=crop')] bg-cover bg-center opacity-20"></div>
         <div className="container mx-auto px-6 relative z-10">
           <div className="text-center max-w-4xl mx-auto animate-fade-in">
-            <h1 className="text-5xl lg:text-6xl font-bold text-white mb-6">
+            <h1 className="text-5xl lg:text-6xl font-bold text-white mb-6 font-['Inter']">
               DJ Entertainment Services
             </h1>
-            <p className="text-xl text-gray-300 mb-8">
+            <p className="text-xl text-gray-300 mb-8 font-['Inter']">
               Professional DJ services that transform your events into unforgettable experiences. 
               From intimate gatherings to grand celebrations, we bring the perfect sound and energy.
             </p>
@@ -121,7 +122,7 @@ const DJServices = () => {
               href={whatsappUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center bg-red-600 hover:bg-red-700 text-white font-semibold px-8 py-4 rounded-full transition-all duration-300 hover:scale-105"
+              className="inline-flex items-center bg-red-600 hover:bg-red-700 text-white font-semibold px-8 py-4 rounded-full transition-all duration-300 hover:scale-105 font-['Inter']"
             >
               Book Your Event
               <Calendar className="ml-2" size={20} />
@@ -134,14 +135,14 @@ const DJServices = () => {
       <section className="py-20 bg-white">
         <div className="container mx-auto px-6">
           <div className="text-center mb-16 animate-fade-in">
-            <h2 className="text-4xl font-bold text-black mb-6">See Us In Action</h2>
-            <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+            <h2 className="text-4xl font-bold text-black mb-6 font-['Inter']">See Us In Action</h2>
+            <p className="text-xl text-gray-600 max-w-3xl mx-auto font-['Inter']">
               Watch our DJ performances and see why we're the perfect choice for your event
             </p>
           </div>
 
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 max-w-6xl mx-auto">
-            <div className="bg-black rounded-2xl overflow-hidden shadow-2xl">
+            <div className="bg-black rounded-2xl overflow-hidden shadow-2xl animate-fade-in">
               <div className="aspect-video">
                 <iframe 
                   src="https://youtube.com/embed/JIFEf7DdKEw" 
@@ -151,15 +152,16 @@ const DJServices = () => {
                   allowFullScreen
                   className="w-full h-full"
                   title="DJ Bidex Performance Demo 1"
+                  loading="lazy"
                 ></iframe>
               </div>
               <div className="p-6">
-                <h3 className="text-xl font-bold text-white mb-2">Live Performance</h3>
-                <p className="text-gray-400">Watch our professional DJ setup in action</p>
+                <h3 className="text-xl font-bold text-white mb-2 font-['Inter']">Live Performance</h3>
+                <p className="text-gray-400 font-['Inter']">Watch our professional DJ setup in action</p>
               </div>
             </div>
 
-            <div className="bg-black rounded-2xl overflow-hidden shadow-2xl">
+            <div className="bg-black rounded-2xl overflow-hidden shadow-2xl animate-fade-in" style={{ animationDelay: '0.2s' }}>
               <div className="aspect-video">
                 <iframe 
                   src="https://youtube.com/embed/3c-IhydwwkQ" 
@@ -169,11 +171,12 @@ const DJServices = () => {
                   allowFullScreen
                   className="w-full h-full"
                   title="DJ Bidex Performance Demo 2"
+                  loading="lazy"
                 ></iframe>
               </div>
               <div className="p-6">
-                <h3 className="text-xl font-bold text-white mb-2">Event Highlights</h3>
-                <p className="text-gray-400">Experience the energy we bring to every event</p>
+                <h3 className="text-xl font-bold text-white mb-2 font-['Inter']">Event Highlights</h3>
+                <p className="text-gray-400 font-['Inter']">Experience the energy we bring to every event</p>
               </div>
             </div>
           </div>
@@ -224,8 +227,8 @@ const DJServices = () => {
       <section className="py-20 bg-white">
         <div className="container mx-auto px-6">
           <div className="text-center mb-16 animate-fade-in">
-            <h2 className="text-4xl font-bold text-black mb-6">DJ Packages & Pricing</h2>
-            <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+            <h2 className="text-4xl font-bold text-black mb-6 font-['Inter']">DJ Packages & Pricing</h2>
+            <p className="text-xl text-gray-600 max-w-3xl mx-auto font-['Inter']">
               Choose the perfect package for your event. Both options include professional service and quality equipment.
             </p>
           </div>
@@ -240,23 +243,23 @@ const DJServices = () => {
               >
                 {pkg.popular && (
                   <div className="absolute -top-4 left-1/2 transform -translate-x-1/2">
-                    <span className="bg-red-600 text-white px-4 py-1 rounded-full text-sm font-semibold">
+                    <span className="bg-red-600 text-white px-4 py-1 rounded-full text-sm font-semibold font-['Inter']">
                       Most Popular
                     </span>
                   </div>
                 )}
 
                 <div className="text-center mb-8">
-                  <h3 className="text-2xl font-bold text-black mb-2">{pkg.name}</h3>
-                  <div className="text-5xl font-bold text-red-600 mb-4">{pkg.price}</div>
-                  <p className="text-gray-600">{pkg.description}</p>
+                  <h3 className="text-2xl font-bold text-black mb-2 font-['Inter']">{pkg.name}</h3>
+                  <div className="text-5xl font-bold text-red-600 mb-4 font-['Inter']">{pkg.price}</div>
+                  <p className="text-gray-600 font-['Inter']">{pkg.description}</p>
                 </div>
 
                 <ul className="space-y-3 mb-8">
                   {pkg.features.map((feature, idx) => (
                     <li key={idx} className="flex items-start">
                       <Check className="text-red-500 mr-3 mt-1 flex-shrink-0" size={16} />
-                      <span className="text-gray-700">{feature}</span>
+                      <span className="text-gray-700 font-['Inter']">{feature}</span>
                     </li>
                   ))}
                 </ul>
@@ -265,7 +268,7 @@ const DJServices = () => {
                   href={whatsappUrl}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className={`block w-full text-center py-3 px-6 rounded-full font-semibold transition-all duration-300 hover:scale-105 ${
+                  className={`block w-full text-center py-3 px-6 rounded-full font-semibold transition-all duration-300 hover:scale-105 font-['Inter'] ${
                     pkg.popular 
                       ? 'bg-red-600 hover:bg-red-700 text-white' 
                       : 'border-2 border-red-600 text-red-600 hover:bg-red-600 hover:text-white'
@@ -365,15 +368,15 @@ const DJServices = () => {
       {/* CTA Section */}
       <section className="py-20 bg-red-600">
         <div className="container mx-auto px-6 text-center animate-fade-in">
-          <h2 className="text-4xl font-bold text-white mb-6">Ready to Book Your Event?</h2>
-          <p className="text-xl text-white/90 mb-8 max-w-2xl mx-auto">
+          <h2 className="text-4xl font-bold text-white mb-6 font-['Inter']">Ready to Book Your Event?</h2>
+          <p className="text-xl text-white/90 mb-8 max-w-2xl mx-auto font-['Inter']">
             Let's make your next event unforgettable. Contact us today for a free consultation and custom quote.
           </p>
           <a 
             href={whatsappUrl}
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center bg-white text-red-600 font-semibold px-8 py-4 rounded-full hover:bg-gray-100 transition-all duration-300 hover:scale-105"
+            className="inline-flex items-center bg-white text-red-600 font-semibold px-8 py-4 rounded-full hover:bg-gray-100 transition-all duration-300 hover:scale-105 font-['Inter']"
           >
             <Phone className="mr-2" size={20} />
             Book Your Event Now
