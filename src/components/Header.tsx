@@ -1,6 +1,7 @@
 
 import { Menu, X } from 'lucide-react';
 import { useState } from 'react';
+import { Link } from 'react-router-dom';
 
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -14,22 +15,23 @@ const Header = () => {
       <div className="container mx-auto px-6 py-4">
         <div className="flex items-center justify-between">
           {/* Logo */}
-          <div className="flex items-center space-x-3">
+          <Link to="/" className="flex items-center space-x-3">
             <img 
               src="/lovable-uploads/4f36b461-ddc9-494a-8022-d6409f46ed4e.png" 
               alt="DJ Bidex Entertainment" 
               className="h-10 w-auto"
             />
-          </div>
+          </Link>
 
           {/* Desktop Navigation */}
           <nav className="hidden md:flex items-center space-x-8">
-            <a href="#home" className="text-white hover:text-cyan-400 transition-colors">Home</a>
+            <Link to="/" className="text-white hover:text-cyan-400 transition-colors">Home</Link>
             <a href="#discography" className="text-white hover:text-cyan-400 transition-colors">Discography</a>
             <a href="#events" className="text-white hover:text-cyan-400 transition-colors">Events</a>
             <a href="#blog" className="text-white hover:text-cyan-400 transition-colors">Blog</a>
             <a href="#shop" className="text-white hover:text-cyan-400 transition-colors">Shop</a>
-            <a href="#pages" className="text-white hover:text-cyan-400 transition-colors">Pages</a>
+            <Link to="/services/dj" className="text-white hover:text-cyan-400 transition-colors">DJ Services</Link>
+            <Link to="/contact" className="text-white hover:text-cyan-400 transition-colors">Contact</Link>
           </nav>
 
           {/* Social Icons */}
@@ -67,14 +69,15 @@ const Header = () => {
 
         {/* Mobile Menu */}
         {isMenuOpen && (
-          <div className="md:hidden mt-4 py-4 border-t border-gray-700">
+          <div className="md:hidden mt-4 py-4 border-t border-gray-700 animate-fade-in">
             <nav className="flex flex-col space-y-4">
-              <a href="#home" className="text-white hover:text-cyan-400 transition-colors">Home</a>
+              <Link to="/" className="text-white hover:text-cyan-400 transition-colors">Home</Link>
               <a href="#discography" className="text-white hover:text-cyan-400 transition-colors">Discography</a>
               <a href="#events" className="text-white hover:text-cyan-400 transition-colors">Events</a>
               <a href="#blog" className="text-white hover:text-cyan-400 transition-colors">Blog</a>
               <a href="#shop" className="text-white hover:text-cyan-400 transition-colors">Shop</a>
-              <a href="#pages" className="text-white hover:text-cyan-400 transition-colors">Pages</a>
+              <Link to="/services/dj" className="text-white hover:text-cyan-400 transition-colors">DJ Services</Link>
+              <Link to="/contact" className="text-white hover:text-cyan-400 transition-colors">Contact</Link>
             </nav>
           </div>
         )}
