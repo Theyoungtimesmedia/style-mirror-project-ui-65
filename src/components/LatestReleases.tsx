@@ -1,5 +1,5 @@
-
 import { Play, Heart, Download } from 'lucide-react';
+import { Link } from 'react-router-dom';
 
 const LatestReleases = () => {
   const releases = [
