@@ -1,4 +1,3 @@
-
 import { useState } from 'react';
 import { Check, Music, Users, Star, Calendar, ArrowRight, Phone, Play } from 'lucide-react';
 import { Link } from 'react-router-dom';
@@ -13,33 +12,33 @@ const DJServices = () => {
 
   const serviceTypes = [
     {
-      title: "Weddings",
-      description: "Make your special day unforgettable with romantic music and elegant lighting",
-      image: "https://images.unsplash.com/photo-1519741497674-611481863552?w=400&h=300&fit=crop"
-    },
-    {
-      title: "Birthday Parties",
-      description: "Celebrate another year with high-energy music and vibrant party atmosphere",
-      image: "https://images.unsplash.com/photo-1530103862676-de8c9debad1d?w=400&h=300&fit=crop"
-    },
-    {
       title: "Corporate Events",
       description: "Professional entertainment for conferences, product launches, and company parties",
-      image: "https://images.unsplash.com/photo-1511578314322-379afb476865?w=400&h=300&fit=crop"
+      image: "/lovable-uploads/832bae32-428c-4c3b-a03a-b213d53d4780.png"
     },
     {
-      title: "Private Events",
-      description: "Intimate gatherings with personalized music selection and professional service",
-      image: "https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?w=400&h=300&fit=crop"
+      title: "Wedding Celebrations",
+      description: "Make your special day unforgettable with romantic music and elegant atmosphere",
+      image: "/lovable-uploads/f7b40b6e-a587-44ca-b1de-53d202638257.png"
+    },
+    {
+      title: "Party Events",
+      description: "High-energy entertainment for birthdays, house parties and celebrations",
+      image: "/lovable-uploads/dac82fd3-5350-4321-a0c4-4b9ed104b342.png"
+    },
+    {
+      title: "Religious Ceremonies",
+      description: "Respectful and professional sound services for religious and spiritual events",
+      image: "/lovable-uploads/51e483f4-f26f-4055-92cb-afcfff1020a2.png"
     },
     {
       title: "Baby Showers",
       description: "Gentle, celebratory music perfect for welcoming the new bundle of joy",
-      image: "https://images.unsplash.com/photo-1576649678881-42d2ba37bf10?w=400&h=300&fit=crop"
+      image: "/lovable-uploads/ddb2ad2e-ae2b-4122-81b9-8d2daf5980d5.png"
     },
     {
-      title: "House Parties",
-      description: "Turn your home into the ultimate party destination with great beats",
+      title: "Private Events",
+      description: "Intimate gatherings with personalized music selection and professional service",
       image: "https://images.unsplash.com/photo-1516450360452-9312f5e86fc7?w=400&h=300&fit=crop"
     }
   ];
@@ -108,7 +107,7 @@ const DJServices = () => {
       
       {/* Hero Section */}
       <section className="relative bg-black pt-24 pb-20">
-        <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?w=1920&h=1080&fit=crop')] bg-cover bg-center opacity-20"></div>
+        <div className="absolute inset-0 bg-[url('/lovable-uploads/c8b55511-147a-42e4-81d2-c83ab36d78dd.png')] bg-cover bg-center opacity-20"></div>
         <div className="container mx-auto px-6 relative z-10">
           <div className="text-center max-w-4xl mx-auto animate-fade-in">
             <h1 className="text-5xl lg:text-6xl font-bold text-white mb-6 font-['Inter']">
@@ -205,6 +204,7 @@ const DJServices = () => {
                     src={service.image} 
                     alt={service.title}
                     className="w-full h-48 object-cover group-hover:scale-110 transition-transform duration-300"
+                    loading={index < 3 ? "eager" : "lazy"}
                   />
                   <div className="absolute inset-0 bg-black/30"></div>
                   <h3 className="absolute bottom-4 left-4 text-xl font-bold text-white">{service.title}</h3>

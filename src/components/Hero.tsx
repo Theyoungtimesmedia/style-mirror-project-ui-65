@@ -12,10 +12,11 @@ const Hero = () => {
       {/* Background Image */}
       <div className="absolute inset-0">
         <img 
-          src="https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=1920&h=1080&fit=crop&auto=format&q=80" 
+          src="/lovable-uploads/c8b55511-147a-42e4-81d2-c83ab36d78dd.png" 
           alt="DJ Background" 
           className="w-full h-full object-cover"
           loading="eager"
+          fetchpriority="high"
         />
         <div className="absolute inset-0 bg-gradient-to-r from-black/85 via-black/70 to-red-900/30"></div>
       </div>
