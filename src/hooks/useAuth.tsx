@@ -24,18 +24,25 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     // Set up auth state listener
     const { data: { subscription } } = supabase.auth.onAuthStateChange(
       async (event, session) => {
+        console.log('Auth state change:', event, session?.user?.email);
         setSession(session);
         setUser(session?.user ?? null);
         
         if (session?.user) {
           // Check if user is admin
-          const { data: adminData } = await supabase
-            .from('admins')
-            .select('*')
-            .eq('user_id', session.user.id)
-            .single();
-          
-          setIsAdmin(!!adminData);
+          try {
+            const { data: adminData, error } = await supabase
+              .from('admins')
+              .select('*')
+              .eq('user_id', session.user.id)
+              .single();
+            
+            console.log('Admin check result:', adminData, error);
+            setIsAdmin(!!adminData && !error);
+          } catch (error) {
+            console.error('Error checking admin status:', error);
+            setIsAdmin(false);
+          }
         } else {
           setIsAdmin(false);
         }
@@ -46,9 +53,25 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 
     // Check for existing session
     supabase.auth.getSession().then(({ data: { session } }) => {
+      console.log('Initial session check:', session?.user?.email);
       setSession(session);
       setUser(session?.user ?? null);
-      setLoading(false);
+      
+      if (session?.user) {
+        // Check if user is admin for initial load
+        supabase
+          .from('admins')
+          .select('*')
+          .eq('user_id', session.user.id)
+          .single()
+          .then(({ data: adminData, error }) => {
+            console.log('Initial admin check:', adminData, error);
+            setIsAdmin(!!adminData && !error);
+            setLoading(false);
+          });
+      } else {
+        setLoading(false);
+      }
     });
 
     return () => subscription.unsubscribe();
