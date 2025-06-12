@@ -1,3 +1,4 @@
+
 import { useState } from 'react';
 import { Check, Music, Users, Star, Calendar, ArrowRight, Phone, Play } from 'lucide-react';
 import { Link } from 'react-router-dom';
@@ -6,7 +7,7 @@ import Footer from '../components/Footer';
 
 const DJServices = () => {
   const [selectedPackage, setSelectedPackage] = useState('full');
-  const whatsappNumber = "+2347038603819";
+  const whatsappNumber = "+2349026001136";
   const whatsappMessage = "Hello! I'd like to book DJ services for my event.";
   const whatsappUrl = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(whatsappMessage)}`;
 

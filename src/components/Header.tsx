@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom';
 
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const whatsappNumber = "+2347038603819";
+  const whatsappNumber = "+2349026001136";
   const whatsappMessage = "Hello! I'd like to get in touch.";
   const whatsappUrl = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(whatsappMessage)}`;
 

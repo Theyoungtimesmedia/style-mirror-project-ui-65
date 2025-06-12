@@ -2,7 +2,8 @@
 import { Phone, Mail, MapPin } from 'lucide-react';
 
 const Footer = () => {
-  const whatsappNumber = "+2347038603819";
+  const whatsappNumber = "+2349026001136";
+  const phoneNumber = "+2349036854102";
   const whatsappMessage = "Hello! I'd like to send you a message.";
   const whatsappUrl = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(whatsappMessage)}`;
 
@@ -96,18 +97,18 @@ const Footer = () => {
             <h3 className="text-xl font-bold mb-6 text-red-400 font-['Inter']">Get In Touch</h3>
             <div className="space-y-4">
               <a 
-                href={`tel:${whatsappNumber}`}
+                href={`tel:${phoneNumber}`}
                 className="flex items-center text-gray-400 hover:text-white transition-colors duration-300 group"
               >
                 <Phone className="mr-3 group-hover:scale-110 transition-transform duration-300" size={20} />
-                <span className="font-['Inter']">{whatsappNumber}</span>
+                <span className="font-['Inter']">{phoneNumber}</span>
               </a>
               <a 
-                href="mailto:djbidex@gmail.com"
+                href="mailto:deejaybidexx@gmail.com"
                 className="flex items-center text-gray-400 hover:text-white transition-colors duration-300 group"
               >
                 <Mail className="mr-3 group-hover:scale-110 transition-transform duration-300" size={20} />
-                <span className="font-['Inter']">djbidex@gmail.com</span>
+                <span className="font-['Inter']">deejaybidexx@gmail.com</span>
               </a>
               <div className="flex items-center text-gray-400">
                 <MapPin className="mr-3" size={20} />

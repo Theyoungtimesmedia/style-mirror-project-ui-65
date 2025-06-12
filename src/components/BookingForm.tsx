@@ -1,4 +1,3 @@
-
 import { useState } from 'react';
 import { Calendar, MapPin, Users, Music, Phone, ArrowRight } from 'lucide-react';
 
@@ -15,7 +14,7 @@ const BookingForm = () => {
     additionalInfo: ''
   });
 
-  const whatsappNumber = "+2347038603819";
+  const whatsappNumber = "+2349026001136";
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
