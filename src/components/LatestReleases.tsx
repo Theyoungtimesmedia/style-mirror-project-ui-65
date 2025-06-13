@@ -1,8 +1,8 @@
-
 import { useState, useEffect } from 'react';
 import { Play, Heart, Download } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { supabase } from '@/integrations/supabase/client';
+import AudioPlayer from './AudioPlayer';
 
 interface Mixtape {
   id: string;
@@ -16,6 +16,7 @@ interface Mixtape {
 const LatestReleases = () => {
   const [releases, setReleases] = useState<Mixtape[]>([]);
   const [loading, setLoading] = useState(true);
+  const [playingTrack, setPlayingTrack] = useState<string | null>(null);
 
   // Static fallback data
   const fallbackReleases = [
@@ -98,6 +99,21 @@ const LatestReleases = () => {
     }
   };
 
+  const handleTrackSelect = (trackId: string) => {
+    setPlayingTrack(playingTrack === trackId ? null : trackId);
+  };
+
+  const handleDownload = (audioUrl: string, title: string) => {
+    if (audioUrl) {
+      const link = document.createElement('a');
+      link.href = audioUrl;
+      link.download = `${title}.mp3`;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    }
+  };
+
   const displayReleases = releases.length > 0 ? releases : fallbackReleases;
 
   return (
@@ -105,10 +121,10 @@ const LatestReleases = () => {
       <div className="container mx-auto px-6">
         <div className="text-center mb-16 animate-fade-in">
           <h2 className="text-4xl lg:text-5xl font-bold text-black mb-6 font-['Inter']">
-            Latest Nigerian Hits
+            DJ BIDEX Hits and Demos
           </h2>
           <p className="text-gray-600 text-lg max-w-2xl mx-auto font-['Inter']">
-            Feel the rhythm with the hottest tracks from Nigeria's finest artists
+            Listen to the hottest tracks and exclusive demos from DJ Bidex Entertainment
           </p>
         </div>
 
@@ -143,13 +159,19 @@ const LatestReleases = () => {
                   <div className="absolute inset-0 bg-black/20 group-hover:bg-black/40 transition-all duration-300 flex items-center justify-center">
                     <div className="transform scale-0 group-hover:scale-100 transition-transform duration-300">
                       <div className="flex space-x-3">
-                        <button className="bg-red-600 hover:bg-red-700 text-white rounded-full p-3 transition-all duration-300 hover:scale-110 shadow-lg">
+                        <button 
+                          onClick={() => handleTrackSelect(release.id)}
+                          className="bg-red-600 hover:bg-red-700 text-white rounded-full p-3 transition-all duration-300 hover:scale-110 shadow-lg"
+                        >
                           <Play size={20} />
                         </button>
                         <button className="bg-black/50 backdrop-blur-sm hover:bg-black/70 text-white rounded-full p-3 transition-all duration-300 hover:scale-110">
                           <Heart size={20} />
                         </button>
-                        <button className="bg-black/50 backdrop-blur-sm hover:bg-black/70 text-white rounded-full p-3 transition-all duration-300 hover:scale-110">
+                        <button 
+                          onClick={() => handleDownload(release.audio_url, release.title)}
+                          className="bg-black/50 backdrop-blur-sm hover:bg-black/70 text-white rounded-full p-3 transition-all duration-300 hover:scale-110"
+                        >
                           <Download size={20} />
                         </button>
                       </div>
@@ -180,6 +202,18 @@ const LatestReleases = () => {
                     {release.artist} • {new Date(release.release_date).getFullYear()}
                   </p>
                 </div>
+
+                {/* Audio Player */}
+                {playingTrack === release.id && release.audio_url && (
+                  <div className="p-4 border-t">
+                    <AudioPlayer
+                      audioUrl={release.audio_url}
+                      title={release.title}
+                      artist={release.artist}
+                      thumbnail={release.thumbnail_url || "https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?w=300&h=300&fit=crop&auto=format&q=80"}
+                    />
+                  </div>
+                )}
               </div>
             ))}
           </div>
