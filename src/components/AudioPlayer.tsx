@@ -139,7 +139,12 @@ const AudioPlayer = ({ audioUrl, title, artist, thumbnail }: AudioPlayerProps) =
           max={duration || 0}
           value={currentTime}
           onChange={handleSeek}
-          className="w-full h-2 bg-gray-700 rounded-lg appearance-none cursor-pointer slider"
+          className="w-full h-2 bg-gray-700 rounded-lg appearance-none cursor-pointer 
+                     [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:h-4 [&::-webkit-slider-thumb]:w-4 
+                     [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:bg-red-500 
+                     [&::-webkit-slider-thumb]:cursor-pointer [&::-webkit-slider-thumb]:shadow-lg
+                     [&::-moz-range-thumb]:h-4 [&::-moz-range-thumb]:w-4 [&::-moz-range-thumb]:rounded-full 
+                     [&::-moz-range-thumb]:bg-red-500 [&::-moz-range-thumb]:cursor-pointer [&::-moz-range-thumb]:border-none"
         />
         <div className="flex justify-between text-sm text-gray-400 mt-1">
           <span>{formatTime(currentTime)}</span>
@@ -187,32 +192,15 @@ const AudioPlayer = ({ audioUrl, title, artist, thumbnail }: AudioPlayerProps) =
             step="0.1"
             value={isMuted ? 0 : volume}
             onChange={handleVolumeChange}
-            className="w-20 h-2 bg-gray-700 rounded-lg appearance-none cursor-pointer"
+            className="w-20 h-2 bg-gray-700 rounded-lg appearance-none cursor-pointer
+                       [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:h-4 [&::-webkit-slider-thumb]:w-4 
+                       [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:bg-red-500 
+                       [&::-webkit-slider-thumb]:cursor-pointer [&::-webkit-slider-thumb]:shadow-lg
+                       [&::-moz-range-thumb]:h-4 [&::-moz-range-thumb]:w-4 [&::-moz-range-thumb]:rounded-full 
+                       [&::-moz-range-thumb]:bg-red-500 [&::-moz-range-thumb]:cursor-pointer [&::-moz-range-thumb]:border-none"
           />
         </div>
       </div>
-
-      <style jsx>{`
-        .slider::-webkit-slider-thumb {
-          appearance: none;
-          height: 16px;
-          width: 16px;
-          border-radius: 50%;
-          background: #ef4444;
-          cursor: pointer;
-          box-shadow: 0 0 10px rgba(239, 68, 68, 0.5);
-        }
-        
-        .slider::-moz-range-thumb {
-          height: 16px;
-          width: 16px;
-          border-radius: 50%;
-          background: #ef4444;
-          cursor: pointer;
-          border: none;
-          box-shadow: 0 0 10px rgba(239, 68, 68, 0.5);
-        }
-      `}</style>
     </div>
   );
 };
