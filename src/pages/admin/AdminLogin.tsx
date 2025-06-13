@@ -2,7 +2,8 @@
 import { useState } from 'react';
 import { Navigate } from 'react-router-dom';
 import { useAuth } from '@/hooks/useAuth';
-import { Lock, Mail, Eye, EyeOff } from 'lucide-react';
+import { Lock, Mail, Eye, EyeOff, UserPlus, LogIn } from 'lucide-react';
+import { supabase } from '@/integrations/supabase/client';
 
 const AdminLogin = () => {
   const [email, setEmail] = useState('');
@@ -10,8 +11,9 @@ const AdminLogin = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
+  const [isSignUp, setIsSignUp] = useState(false);
   
-  const { user, isAdmin, signIn } = useAuth();
+  const { user, isAdmin, signIn, loading: authLoading } = useAuth();
 
   // Redirect if already logged in as admin
   if (user && isAdmin) {
@@ -23,14 +25,67 @@ const AdminLogin = () => {
     setLoading(true);
     setError('');
 
-    const { error } = await signIn(email, password);
-    
-    if (error) {
-      setError(error.message);
+    try {
+      if (isSignUp) {
+        // Sign up new user
+        const { data, error: signUpError } = await supabase.auth.signUp({
+          email,
+          password,
+          options: {
+            emailRedirectTo: `${window.location.origin}/admin/dashboard`
+          }
+        });
+
+        if (signUpError) {
+          setError(signUpError.message);
+          setLoading(false);
+          return;
+        }
+
+        if (data.user) {
+          // Add user to admins table
+          const { error: adminError } = await supabase
+            .from('admins')
+            .insert([
+              {
+                user_id: data.user.id,
+                email: email,
+                role: 'admin'
+              }
+            ]);
+
+          if (adminError) {
+            console.error('Error adding to admins table:', adminError);
+            setError('Account created but failed to set admin privileges. Contact support.');
+          } else {
+            setError('');
+            alert('Account created successfully! Please check your email to confirm your account, then try logging in.');
+            setIsSignUp(false);
+          }
+        }
+      } else {
+        // Sign in existing user
+        const { error: signInError } = await signIn(email, password);
+        
+        if (signInError) {
+          setError(signInError.message);
+        }
+      }
+    } catch (err) {
+      setError('An unexpected error occurred. Please try again.');
+      console.error('Auth error:', err);
     }
     
     setLoading(false);
   };
+
+  if (authLoading) {
+    return (
+      <div className="min-h-screen bg-black flex items-center justify-center">
+        <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-red-500"></div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-black flex items-center justify-center px-4">
@@ -41,8 +96,12 @@ const AdminLogin = () => {
             alt="DJ Bidex" 
             className="h-16 w-auto mx-auto mb-4"
           />
-          <h2 className="text-2xl font-bold text-white mb-2">Admin Login</h2>
-          <p className="text-gray-400">Access the DJ Bidex admin dashboard</p>
+          <h2 className="text-2xl font-bold text-white mb-2">
+            {isSignUp ? 'Create Admin Account' : 'Admin Login'}
+          </h2>
+          <p className="text-gray-400">
+            {isSignUp ? 'Sign up for admin access' : 'Access the DJ Bidex admin dashboard'}
+          </p>
         </div>
 
         <form onSubmit={handleSubmit} className="space-y-6">
@@ -78,6 +137,7 @@ const AdminLogin = () => {
                 onChange={(e) => setPassword(e.target.value)}
                 className="w-full pl-10 pr-12 py-3 bg-gray-800 border border-gray-700 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-red-500"
                 placeholder="Enter your password"
+                minLength={6}
               />
               <button
                 type="button"
@@ -104,12 +164,27 @@ const AdminLogin = () => {
               <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white"></div>
             ) : (
               <>
-                <Lock size={20} />
-                <span>Sign In</span>
+                {isSignUp ? <UserPlus size={20} /> : <LogIn size={20} />}
+                <span>{isSignUp ? 'Sign Up' : 'Sign In'}</span>
               </>
             )}
           </button>
         </form>
+
+        <div className="mt-6 text-center">
+          <button
+            onClick={() => {
+              setIsSignUp(!isSignUp);
+              setError('');
+            }}
+            className="text-red-400 hover:text-red-300 transition-colors text-sm"
+          >
+            {isSignUp 
+              ? 'Already have an account? Sign in' 
+              : 'Need an account? Sign up'
+            }
+          </button>
+        </div>
 
         <div className="mt-6 text-center">
           <a 

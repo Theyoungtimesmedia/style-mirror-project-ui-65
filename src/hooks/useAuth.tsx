@@ -29,20 +29,22 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         setUser(session?.user ?? null);
         
         if (session?.user) {
-          // Check if user is admin
-          try {
-            const { data: adminData, error } = await supabase
-              .from('admins')
-              .select('*')
-              .eq('user_id', session.user.id)
-              .single();
-            
-            console.log('Admin check result:', adminData, error);
-            setIsAdmin(!!adminData && !error);
-          } catch (error) {
-            console.error('Error checking admin status:', error);
-            setIsAdmin(false);
-          }
+          // Check if user is admin - use setTimeout to prevent auth callback blocking
+          setTimeout(async () => {
+            try {
+              const { data: adminData, error } = await supabase
+                .from('admins')
+                .select('*')
+                .eq('user_id', session.user.id)
+                .single();
+              
+              console.log('Admin check result:', adminData, error);
+              setIsAdmin(!!adminData && !error);
+            } catch (error) {
+              console.error('Error checking admin status:', error);
+              setIsAdmin(false);
+            }
+          }, 0);
         } else {
           setIsAdmin(false);
         }
@@ -78,11 +80,18 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   }, []);
 
   const signIn = async (email: string, password: string) => {
-    const { error } = await supabase.auth.signInWithPassword({
-      email,
-      password,
-    });
-    return { error };
+    try {
+      const { data, error } = await supabase.auth.signInWithPassword({
+        email,
+        password,
+      });
+      
+      console.log('Sign in result:', data, error);
+      return { error };
+    } catch (err) {
+      console.error('Sign in error:', err);
+      return { error: err };
+    }
   };
 
   const signOut = async () => {
