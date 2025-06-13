@@ -10,6 +10,14 @@ interface Message {
   image?: string;
 }
 
+interface CustomerInfo {
+  name?: string;
+  email?: string;
+  eventType?: string;
+  eventDate?: string;
+  eventLocation?: string;
+}
+
 const Chatbot = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [messages, setMessages] = useState<Message[]>([]);
@@ -17,9 +25,11 @@ const Chatbot = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [imagePreview, setImagePreview] = useState<string | null>(null);
   const [image, setImage] = useState<string | null>(null);
+  const [conversationId, setConversationId] = useState<string | null>(null);
+  const [customerInfo, setCustomerInfo] = useState<CustomerInfo>({});
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
-  const whatsappNumber = "+2347038603819";
+  const whatsappNumber = "+2349026001136";
 
   // Initialize chat with greeting message
   useEffect(() => {
@@ -27,7 +37,7 @@ const Chatbot = () => {
       setMessages([
         {
           role: 'assistant',
-          content: 'Hello! I\'m Obadiah Samson, DJ Bidex\'s booking manager. How can I assist you with your event today?',
+          content: 'Hello! I\'m Obadiah Samson, DJ Bidex\'s booking manager. Welcome to DJ Bidex Computers! To get started, may I have your name please?',
           timestamp: new Date()
         }
       ]);
@@ -38,6 +48,92 @@ const Chatbot = () => {
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [messages]);
+
+  // Extract customer info from messages
+  useEffect(() => {
+    const extractCustomerInfo = () => {
+      const messageText = messages.map(m => m.content).join(' ').toLowerCase();
+      
+      // Simple extraction logic - this could be enhanced
+      if (!customerInfo.name && messageText.includes('my name is')) {
+        const nameMatch = messageText.match(/my name is ([^.!?]+)/i);
+        if (nameMatch) {
+          setCustomerInfo(prev => ({ ...prev, name: nameMatch[1].trim() }));
+        }
+      }
+      
+      if (!customerInfo.email && messageText.includes('@')) {
+        const emailMatch = messageText.match(/([a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,})/);
+        if (emailMatch) {
+          setCustomerInfo(prev => ({ ...prev, email: emailMatch[1] }));
+        }
+      }
+    };
+
+    extractCustomerInfo();
+  }, [messages, customerInfo]);
+
+  const saveConversation = async () => {
+    try {
+      const conversationData = {
+        customer_name: customerInfo.name || 'Anonymous Customer',
+        customer_email: customerInfo.email,
+        event_type: customerInfo.eventType,
+        event_date: customerInfo.eventDate,
+        event_location: customerInfo.eventLocation,
+        chat_messages: messages.map(msg => ({
+          role: msg.role,
+          content: msg.content,
+          timestamp: msg.timestamp.toISOString(),
+          image: msg.image
+        }))
+      };
+
+      if (conversationId) {
+        // Update existing conversation
+        await supabase
+          .from('chat_conversations')
+          .update(conversationData)
+          .eq('id', conversationId);
+      } else {
+        // Create new conversation
+        const { data, error } = await supabase
+          .from('chat_conversations')
+          .insert(conversationData)
+          .select('id')
+          .single();
+        
+        if (error) throw error;
+        if (data) setConversationId(data.id);
+      }
+    } catch (error) {
+      console.error('Error saving conversation:', error);
+    }
+  };
+
+  const exportChatToEmail = async () => {
+    try {
+      const { data, error } = await supabase.functions.invoke('send-chat-email', {
+        body: {
+          customerName: customerInfo.name || 'Anonymous Customer',
+          customerEmail: customerInfo.email,
+          eventType: customerInfo.eventType,
+          eventDate: customerInfo.eventDate,
+          eventLocation: customerInfo.eventLocation,
+          messages: messages.map(msg => ({
+            role: msg.role,
+            content: msg.content,
+            timestamp: msg.timestamp.toISOString()
+          }))
+        }
+      });
+
+      if (error) throw error;
+      console.log('Chat exported to email successfully');
+    } catch (error) {
+      console.error('Error exporting chat to email:', error);
+    }
+  };
 
   const handleSendMessage = async () => {
     if ((!input.trim() && !image) || isLoading) return;
@@ -67,22 +163,39 @@ const Chatbot = () => {
       const { data, error } = await supabase.functions.invoke('chatbot', {
         body: { 
           messages: formattedMessages,
-          image: userMessage.image
+          image: userMessage.image,
+          conversationId: conversationId,
+          customerInfo: customerInfo
         }
       });
 
       if (error) throw error;
 
-      // Handle redirect to WhatsApp if needed
-      if (data.redirectToWhatsApp) {
-        const whatsappMessage = "Hello! I've sent a payment screenshot for my event booking.";
+      const assistantMessage: Message = {
+        role: 'assistant',
+        content: data.response,
+        timestamp: new Date()
+      };
+
+      setMessages(prev => [...prev, assistantMessage]);
+
+      // Save conversation after each exchange
+      await saveConversation();
+
+      // Handle redirect to WhatsApp and email export if needed
+      if (data.redirectToWhatsApp && data.exportChat) {
+        // Export chat to email first
+        await exportChatToEmail();
+        
+        const whatsappMessage = `Hello! I've completed my booking conversation with Obadiah. My name is ${customerInfo.name || 'Customer'} and I've sent a payment screenshot for my event booking.`;
         const whatsappUrl = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(whatsappMessage)}`;
         
+        // Add final message before redirect
         setMessages(prev => [
-          ...prev, 
+          ...prev,
           {
             role: 'assistant',
-            content: data.response + "\n\nI'll redirect you to our WhatsApp for further assistance.",
+            content: "Perfect! I've sent your chat details to our team via email and I'll now redirect you to our WhatsApp for immediate assistance with your payment confirmation.",
             timestamp: new Date()
           }
         ]);
@@ -91,16 +204,6 @@ const Chatbot = () => {
         setTimeout(() => {
           window.open(whatsappUrl, '_blank');
         }, 3000);
-      } else {
-        // Normal response
-        setMessages(prev => [
-          ...prev, 
-          {
-            role: 'assistant',
-            content: data.response,
-            timestamp: new Date()
-          }
-        ]);
       }
     } catch (error) {
       console.error('Error sending message:', error);
@@ -184,7 +287,10 @@ const Chatbot = () => {
         <div className="absolute bottom-16 right-0 w-80 sm:w-96 h-[500px] bg-white rounded-lg shadow-2xl flex flex-col overflow-hidden animate-fade-in">
           {/* Header */}
           <div className="bg-red-600 text-white p-4 flex justify-between items-center">
-            <h3 className="font-semibold">Chat with Obadiah</h3>
+            <div>
+              <h3 className="font-semibold">Chat with Obadiah</h3>
+              <p className="text-xs opacity-90">DJ Bidex Booking Manager</p>
+            </div>
             <button 
               onClick={() => setIsOpen(false)}
               className="text-white hover:text-gray-200 transition-colors"
@@ -228,7 +334,7 @@ const Chatbot = () => {
               <div className="flex justify-start">
                 <div className="bg-gray-200 text-gray-800 rounded-lg px-4 py-2 animate-pulse flex items-center space-x-2">
                   <Loader2 className="animate-spin" size={16} />
-                  <span>Typing...</span>
+                  <span>Obadiah is typing...</span>
                 </div>
               </div>
             )}

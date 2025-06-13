@@ -33,6 +33,42 @@ export type Database = {
         }
         Relationships: []
       }
+      chat_conversations: {
+        Row: {
+          chat_messages: Json
+          created_at: string
+          customer_email: string | null
+          customer_name: string | null
+          event_date: string | null
+          event_location: string | null
+          event_type: string | null
+          id: string
+          updated_at: string
+        }
+        Insert: {
+          chat_messages?: Json
+          created_at?: string
+          customer_email?: string | null
+          customer_name?: string | null
+          event_date?: string | null
+          event_location?: string | null
+          event_type?: string | null
+          id?: string
+          updated_at?: string
+        }
+        Update: {
+          chat_messages?: Json
+          created_at?: string
+          customer_email?: string | null
+          customer_name?: string | null
+          event_date?: string | null
+          event_location?: string | null
+          event_type?: string | null
+          id?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       mixtapes: {
         Row: {
           artist: string
