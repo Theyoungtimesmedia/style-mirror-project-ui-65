@@ -62,7 +62,7 @@ const AdminDashboard = () => {
         .order('updated_at', { ascending: false });
 
       if (error) throw error;
-      setConversations((data || []).map(normalizeConversation));
+      setConversations(((data as any[]) || []).map(normalizeConversation));
     } catch (error) {
       console.error('Error fetching conversations:', error);
     } finally {
