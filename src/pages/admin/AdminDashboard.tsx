@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from 'react';
 import { useAuth } from '@/hooks/useAuth';
 import { Navigate } from 'react-router-dom';
@@ -29,6 +28,26 @@ const AdminDashboard = () => {
   const [selectedConversation, setSelectedConversation] = useState<ChatConversation | null>(null);
   const [isLoading, setIsLoading] = useState(true);
 
+  // Type for a conversation row coming from Supabase, chat_messages may be Json/string/array
+  const normalizeConversation = (raw: any): ChatConversation => {
+    let chat_messages: any[] = [];
+    if (Array.isArray(raw.chat_messages)) {
+      chat_messages = raw.chat_messages;
+    } else if (typeof raw.chat_messages === "string") {
+      try {
+        chat_messages = JSON.parse(raw.chat_messages);
+      } catch {
+        chat_messages = [];
+      }
+    } else if (raw.chat_messages && typeof raw.chat_messages === "object") {
+      chat_messages = raw.chat_messages as any[];
+    }
+    return {
+      ...raw,
+      chat_messages,
+    };
+  };
+
   useEffect(() => {
     if (isAdmin) {
       fetchConversations();
@@ -43,7 +62,7 @@ const AdminDashboard = () => {
         .order('updated_at', { ascending: false });
 
       if (error) throw error;
-      setConversations(data || []);
+      setConversations((data || []).map(normalizeConversation));
     } catch (error) {
       console.error('Error fetching conversations:', error);
     } finally {
