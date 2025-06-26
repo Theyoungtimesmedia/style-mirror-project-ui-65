@@ -1,4 +1,3 @@
-
 import { useState } from 'react';
 import { Check, Music, Users, Star, Calendar, ArrowRight, Phone, Play } from 'lucide-react';
 import { Link } from 'react-router-dom';
@@ -47,7 +46,6 @@ const DJServices = () => {
   const packages = {
     full: {
       name: "Full Setup",
-      price: "₦120,000",
       description: "Complete DJ experience with all the bells and whistles",
       features: [
         "Professional Sound System (4-6 Speakers)",
@@ -65,7 +63,6 @@ const DJServices = () => {
     },
     half: {
       name: "Half Setup",
-      price: "₦50,000",
       description: "Essential DJ package for smaller gatherings",
       features: [
         "Core Sound System (2-3 Speakers)",
@@ -224,13 +221,15 @@ const DJServices = () => {
         </div>
       </section>
 
-      {/* Package Details & Pricing */}
+      {/* Package Details */}
       <section className="py-20 bg-white">
         <div className="container mx-auto px-6">
           <div className="text-center mb-16 animate-fade-in">
-            <h2 className="text-4xl font-bold text-black mb-6 font-['Inter']">DJ Packages & Pricing</h2>
+            <h2 className="text-4xl font-bold text-black mb-6 font-['Inter']">DJ Service Packages</h2>
             <p className="text-xl text-gray-600 max-w-3xl mx-auto font-['Inter']">
               Choose the perfect package for your event. Both options include professional service and quality equipment.
+              <br />
+              <span className="text-red-600 font-semibold">Prices vary by event type and will be discussed via WhatsApp</span>
             </p>
           </div>
 
@@ -251,9 +250,13 @@ const DJServices = () => {
                 )}
 
                 <div className="text-center mb-8">
-                  <h3 className="text-2xl font-bold text-black mb-2 font-['Inter']">{pkg.name}</h3>
-                  <div className="text-5xl font-bold text-red-600 mb-4 font-['Inter']">{pkg.price}</div>
+                  <h3 className="text-3xl font-bold text-black mb-4 font-['Inter']">{pkg.name}</h3>
                   <p className="text-gray-600 font-['Inter']">{pkg.description}</p>
+                  <div className="mt-4 p-3 bg-red-50 rounded-lg">
+                    <p className="text-red-600 font-semibold text-sm font-['Inter']">
+                      Custom pricing based on your event needs
+                    </p>
+                  </div>
                 </div>
 
                 <ul className="space-y-3 mb-8">
@@ -275,7 +278,7 @@ const DJServices = () => {
                       : 'border-2 border-red-600 text-red-600 hover:bg-red-600 hover:text-white'
                   }`}
                 >
-                  Book This Package
+                  Get Quote for {pkg.name}
                 </a>
               </div>
             ))}
@@ -380,7 +383,7 @@ const DJServices = () => {
             className="inline-flex items-center bg-white text-red-600 font-semibold px-8 py-4 rounded-full hover:bg-gray-100 transition-all duration-300 hover:scale-105 font-['Inter']"
           >
             <Phone className="mr-2" size={20} />
-            Book Your Event Now
+            Get Your Custom Quote
             <ArrowRight className="ml-2" size={20} />
           </a>
         </div>

@@ -1,3 +1,4 @@
+
 import { useState } from 'react';
 import { Calendar, MapPin, Users, Music, Phone, ArrowRight } from 'lucide-react';
 
@@ -28,10 +29,10 @@ const BookingForm = () => {
 📅 Date: ${formData.eventDate}
 📍 Location: ${formData.location}
 👥 Guest Count: ${formData.guestCount}
-🎵 Package: ${formData.packageType === 'full' ? 'Full Setup (₦120,000)' : 'Half Setup (₦50,000)'}
+🎵 Package: ${formData.packageType === 'full' ? 'Full Setup' : 'Half Setup'}
 📝 Additional Info: ${formData.additionalInfo}
 
-Please send me your account details for payment. Thank you!`;
+Please send me your pricing and account details for payment. Thank you!`;
 
     const whatsappUrl = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(message)}`;
     window.open(whatsappUrl, '_blank');
@@ -52,7 +53,7 @@ Please send me your account details for payment. Thank you!`;
             Book Your Event
           </h2>
           <p className="text-xl text-gray-300 max-w-3xl mx-auto font-['Inter']">
-            Fill out the form below and we'll send all the details to WhatsApp for quick booking
+            Fill out the form below and we'll send all the details to WhatsApp for quick booking and pricing
           </p>
         </div>
 
@@ -166,8 +167,8 @@ Please send me your account details for payment. Thank you!`;
                     required
                     className="w-full px-4 py-3 rounded-lg bg-white/20 border border-red-500/30 text-white focus:outline-none focus:ring-2 focus:ring-red-500 transition-all duration-300 font-['Inter']"
                   >
-                    <option value="full" className="text-black">Full Setup - ₦120,000</option>
-                    <option value="half" className="text-black">Half Setup - ₦50,000</option>
+                    <option value="full" className="text-black">Full Setup</option>
+                    <option value="half" className="text-black">Half Setup</option>
                   </select>
                 </div>
               </div>
@@ -190,11 +191,11 @@ Please send me your account details for payment. Thank you!`;
                   className="group bg-red-600 hover:bg-red-700 text-white font-semibold px-8 py-4 rounded-full transition-all duration-300 hover:scale-105 hover:shadow-2xl flex items-center space-x-2 mx-auto font-['Inter']"
                 >
                   <Phone size={20} />
-                  <span>Send to WhatsApp</span>
+                  <span>Get Quote via WhatsApp</span>
                   <ArrowRight size={20} className="group-hover:translate-x-1 transition-transform" />
                 </button>
                 <p className="text-gray-300 mt-4 text-sm font-['Inter']">
-                  This will open WhatsApp with all your details pre-filled
+                  This will open WhatsApp with all your details and we'll provide custom pricing
                 </p>
               </div>
             </form>

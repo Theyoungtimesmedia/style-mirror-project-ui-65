@@ -26,8 +26,8 @@ const PricingTeaser = () => {
           <div className="bg-white/10 backdrop-blur-md rounded-2xl p-8 border border-white/20 hover:bg-white/15 transition-all duration-300 group hover:scale-105 animate-fade-in">
             <div className="text-center mb-6">
               <h3 className="text-2xl font-bold text-white mb-2">Full Setup</h3>
-              <div className="text-5xl font-bold text-cyan-400 mb-2">₦120K</div>
-              <p className="text-gray-300">Complete DJ Experience</p>
+              <div className="text-2xl font-bold text-cyan-400 mb-2">Complete Package</div>
+              <p className="text-gray-300">Premium DJ Experience</p>
             </div>
 
             <ul className="space-y-3 mb-8">
@@ -61,8 +61,8 @@ const PricingTeaser = () => {
           <div className="bg-white/5 backdrop-blur-md rounded-2xl p-8 border border-white/10 hover:bg-white/10 transition-all duration-300 group hover:scale-105 animate-fade-in delay-200">
             <div className="text-center mb-6">
               <h3 className="text-2xl font-bold text-white mb-2">Half Setup</h3>
-              <div className="text-5xl font-bold text-purple-400 mb-2">₦50K</div>
-              <p className="text-gray-300">Essential DJ Package</p>
+              <div className="text-2xl font-bold text-purple-400 mb-2">Essential Package</div>
+              <p className="text-gray-300">Core DJ Services</p>
             </div>
 
             <ul className="space-y-3 mb-8">
@@ -94,7 +94,7 @@ const PricingTeaser = () => {
 
         <div className="text-center mt-12 animate-fade-in delay-400">
           <p className="text-gray-300 mb-6">
-            Need something custom? We offer flexible packages tailored to your specific event needs.
+            Custom pricing based on your event type, location, and requirements. Get your personalized quote via WhatsApp.
           </p>
           <Link 
             to="/contact"
