@@ -16,10 +16,16 @@ serve(async (req) => {
     const { messages, image, conversationId, customerInfo } = await req.json()
     const geminiApiKey = Deno.env.get('GEMINI_API_KEY')
     
+    console.log('Gemini API Key exists:', !!geminiApiKey)
+    
     if (!geminiApiKey) {
+      console.error('Gemini API key is not configured')
       return new Response(
-        JSON.stringify({ error: 'Gemini API key is not configured' }),
-        { headers: { ...corsHeaders, 'Content-Type': 'application/json' }, status: 500 }
+        JSON.stringify({ 
+          error: 'Gemini API key is not configured',
+          response: "I'm sorry, I'm experiencing technical difficulties right now. Please try reaching us directly on WhatsApp at +2349026001136 for immediate assistance."
+        }),
+        { headers: { ...corsHeaders, 'Content-Type': 'application/json' }, status: 200 }
       )
     }
 
@@ -143,6 +149,8 @@ Remember: Every event is unique, and every customer is different. Be adaptable, 
       })
     }
 
+    console.log('Making request to Gemini API...')
+    
     const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${geminiApiKey}`, {
       method: 'POST',
       headers: {
@@ -153,11 +161,18 @@ Remember: Every event is unique, and every customer is different. Be adaptable, 
 
     const data = await response.json()
     
+    console.log('Gemini API response status:', response.status)
+    console.log('Gemini API response data:', data)
+    
     if (!response.ok) {
       console.error('Gemini API error:', data)
       return new Response(
-        JSON.stringify({ error: 'Failed to get response from Gemini API', details: data }),
-        { headers: { ...corsHeaders, 'Content-Type': 'application/json' }, status: 500 }
+        JSON.stringify({ 
+          error: 'Failed to get response from Gemini API', 
+          details: data,
+          response: "I apologize, but I'm having some technical difficulties right now. Please try sending your message again, or you can reach us directly on WhatsApp at +2349026001136 for immediate assistance."
+        }),
+        { headers: { ...corsHeaders, 'Content-Type': 'application/json' }, status: 200 }
       )
     }
 
@@ -194,7 +209,8 @@ Remember: Every event is unique, and every customer is different. Be adaptable, 
       { headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
     )
   } catch (error) {
-    console.error('Error:', error)
+    console.error('Chatbot function error:', error)
+    console.error('Error stack:', error.stack)
     
     // More user-friendly error response
     const friendlyError = "I'm sorry, I'm having some technical difficulties right now. Please try sending your message again, or you can reach us directly on WhatsApp at +2349026001136."

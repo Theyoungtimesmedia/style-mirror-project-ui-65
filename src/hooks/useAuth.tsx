@@ -36,7 +36,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
                 .from('admins')
                 .select('*')
                 .eq('user_id', session.user.id)
-                .single();
+                .maybeSingle();
               
               console.log('Admin check result:', adminData, error);
               setIsAdmin(!!adminData && !error);
@@ -65,7 +65,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
           .from('admins')
           .select('*')
           .eq('user_id', session.user.id)
-          .single()
+          .maybeSingle()
           .then(({ data: adminData, error }) => {
             console.log('Initial admin check:', adminData, error);
             setIsAdmin(!!adminData && !error);

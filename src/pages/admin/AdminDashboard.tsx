@@ -56,11 +56,13 @@ const AdminDashboard = () => {
 
   const fetchConversations = async () => {
     try {
+      console.log('Fetching conversations...');
       const { data, error } = await supabase
         .from('chat_conversations')
         .select('*')
         .order('updated_at', { ascending: false });
 
+      console.log('Conversations fetch result:', data, error);
       if (error) throw error;
       setConversations(((data as any[]) || []).map(normalizeConversation));
     } catch (error) {
